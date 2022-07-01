@@ -8,6 +8,7 @@
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
 
     <style>
         body {
@@ -21,12 +22,76 @@
             bottom: 0;
             width: 100%;
         }
+
+
+        /*the container must be positioned relative:*/
+        .autocomplete {
+            position: absolute;
+            display: inline-block;
+            top: 10px;
+            left: 10px;
+            z-index: 10;
+        }
+
+        input {
+            border: 1px solid transparent;
+            background-color: #f1f1f1;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        input[type=text] {
+            background-color: #f1f1f1;
+            width: 100%;
+        }
+
+        input[type=submit] {
+            background-color: DodgerBlue;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid #d4d4d4;
+            border-bottom: none;
+            border-top: none;
+            z-index: 99;
+            /*position the autocomplete items to be the same width as the container:*/
+            top: 100%;
+            left: 0;
+            right: 0;
+        }
+
+        .autocomplete-items div {
+            padding: 10px;
+            cursor: pointer;
+            background-color: #fff;
+            border-bottom: 1px solid #d4d4d4;
+        }
+
+        /*when hovering an item:*/
+        .autocomplete-items div:hover {
+            background-color: #e9e9e9;
+        }
+
+        /*when navigating through the items using the arrow keys:*/
+        .autocomplete-active {
+            background-color: DodgerBlue !important;
+            color: #ffffff;
+        }
     </style>
 </head>
 
 <body>
+
+    <div class="autocomplete" style="width:300px;">
+        <input id="myInput" type="text" name="myCountry" placeholder="Country">
+    </div>
     <div id="map"></div>
     <script>
+
+        const csvData = [];
         mapboxgl.accessToken = 'pk.eyJ1Ijoic2VyZ2JlciIsImEiOiJja3dwOWgzeGQwYWdyMm9xb2pkMDFvYmNuIn0.H9AJ_NLmDNYMed6dvu_Q0A';
         const map = new mapboxgl.Map({
             container: 'map',
@@ -83,15 +148,19 @@
 
             d3.csv("data/PSC Areas_data.csv")
                 .then(json => {
-                    console.log('json', json);
-                    json.forEach(point => {
-                        const { Latitude, Longitude } = point
-                        const marker = new mapboxgl.Marker({
-                            draggable: true
-                        })
-                            .setLngLat([+Longitude, +Latitude])
-                            .addTo(map);
-                    });
+                    csvData.push(...json)
+
+                    autocomplete(document.getElementById("myInput"), csvData);
+
+                    // console.log('json', json);
+                    // json.forEach(point => {
+                    //     const { Latitude, Longitude } = point
+                    //     const marker = new mapboxgl.Marker({
+                    //         draggable: true
+                    //     })
+                    //         .setLngLat([+Longitude, +Latitude])
+                    //         .addTo(map);
+                    // });
                 })
 
             fetch('data/texasCounties.json')
@@ -152,11 +221,33 @@
             // feature state for the feature under the mouse.
             const c = []
             map.on('click', 'state-fills', (e) => {
-                console.log('', e.features[0].properties);
+                console.log('', e.features[0]);
                 c.push(e.features[0].properties.COUNTY)
-
                 console.log('c', c);
+
+
+
+                //get geometry and find if a we have a marker from CSV inside  that area
+                const geometry = e.features[0].geometry
+                const data = csvData.find(pin => {
+                    const { Latitude, Longitude } = pin
+                    const point = turf.point([+Longitude, +Latitude]);
+                    return turf.booleanContains(geometry, point);
+                })
+                console.log('data', data);
+                if (data) {
+                    const description = `
+                        <h1>${data.County1}</h1>
+                        <div class="phone">${data["Phone Number1"]}</div>
+                    `
+                    new mapboxgl.Popup()
+                        .setLngLat([+data.Longitude, +data.Latitude])
+                        .setHTML(description)
+                        .addTo(map);
+                }
             })
+
+
             map.on('mousemove', 'state-fills', (e) => {
                 if (e.features.length > 0) {
                     if (hoveredStateId !== null) {
@@ -188,6 +279,183 @@
                 map.getCanvas().style.cursor = '';
             });
         });
+
+
+        function autocomplete(inp, data) {
+            /*the autocomplete function takes two arguments,
+                        the text field element and an array of possible autocompleted values:*/
+            var currentFocus;
+            /*execute a function when someone writes in the text field:*/
+            inp.addEventListener("input", function (e) {
+                var a, b, i, val = this.value;
+                /*close any already open lists of autocompleted values*/
+                closeAllLists();
+                if (!val) { return false; }
+                currentFocus = -1;
+                /*create a DIV element that will contain the items (values):*/
+                a = document.createElement("DIV");
+                a.setAttribute("id", this.id + "autocomplete-list");
+                a.setAttribute("class", "autocomplete-items");
+                /*append the DIV element as a child of the autocomplete container:*/
+                this.parentNode.appendChild(a);
+
+                const arr = data.map((i, key) => {
+                    return {
+                        index: key,
+                        text: `${i['County1']} ${i['Zip Code1']}`
+                    }
+                })
+
+                let counter = 0;
+
+                /*for each item in the array...*/
+                for (i = 0; i < arr.length; i++) {
+
+                    /*check if the item starts with the same letters as the text field value:*/
+                    //if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+
+                    const search = arr[i].text.toUpperCase().search(val.toUpperCase())
+                    if (search > -1) {
+                        /*create a DIV element for each matching element:*/
+                        b = document.createElement("DIV");
+                        /*make the matching letters bold:*/
+
+                        const text = arr[i].text.substr(0, search) + '<b>' + arr[i].text.substr(search, val.length) + '</b>' + arr[i].text.substr((search + val.length), arr[i].text.length)
+
+                        b.innerHTML = text
+                        /*insert a input field that will hold the current array item's value:*/
+                        b.innerHTML += "<input type='hidden' id=" + arr[i].index + " value='" + arr[i].text + "'>";
+                        /*execute a function when someone clicks on the item value (DIV element):*/
+                        b.addEventListener("click", function (e) {
+                            /*insert the value for the autocomplete text field:*/
+                            inp.value = this.getElementsByTagName("input")[0].value.replaceAll('<br>', ' ');
+                            const index = this.getElementsByTagName("input")[0].id;
+                            /*close the list of autocompleted values,
+                            (or any other open lists of autocompleted values:*/
+                            closeAllLists();
+
+                            const point = data[index]
+
+                            console.log('point', point);
+
+                            if (point) {
+
+                                const { Latitude, Longitude } = point
+                                const coords = [+Longitude, +Latitude];
+                                const points = turf.point(coords);
+
+                                map.flyTo({
+                                    center: [+Longitude, +Latitude],
+                                    zoom: 9,
+                                    // pitch: 50
+                                })
+
+                                const description = `
+                                    <h1>${point.County1}</h1>
+                                    <div class="phone">${point["Phone Number1"]}</div>
+                                `
+                                new mapboxgl.Popup()
+                                    .setLngLat(coords)
+                                    .setHTML(description)
+                                    .addTo(map);
+
+                                // map.setFilter('labels', [
+                                //     'match',
+                                //     ['get', 'bygningsnavn'],
+                                //     inp.value,
+                                //     true,
+                                //     false
+                                // ])
+                                // map.setFilter('selected', [
+                                //     'match',
+                                //     ['get', 'bygningsnavn'],
+                                //     inp.value,
+                                //     true,
+                                //     false
+                                // ])
+
+                                // map.once("idle", () => {
+                                //     console.log('done');
+                                //     var mapBounds = map.getBounds()
+                                //     const query = map.queryRenderedFeatures([map.project(mapBounds.getSouthWest()), map.project(mapBounds.getNorthEast())], { layers: ['pins'] });
+
+                                //     const names = [...new Set(query.map(i => i.properties.bygningsnavn))]
+
+                                //     console.log('names', names);
+                                //     map.setFilter('labels', [
+                                //         'match',
+                                //         ['get', 'bygningsnavn'],
+                                //         names,
+                                //         true,
+                                //         false
+                                //     ])
+                                // })
+                            }
+
+                        });
+                        if (counter > 20) return; // display first 20 results
+                        a.appendChild(b);
+                        counter++;
+                    }
+                }
+            });
+            /*execute a function presses a key on the keyboard:*/
+            inp.addEventListener("keydown", function (e) {
+                var x = document.getElementById(this.id + "autocomplete-list");
+                if (x) x = x.getElementsByTagName("div");
+                if (e.keyCode == 40) {
+                    /*If the arrow DOWN key is pressed,
+                    increase the currentFocus variable:*/
+                    currentFocus++;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                } else if (e.keyCode == 38) { //up
+                    /*If the arrow UP key is pressed,
+                    decrease the currentFocus variable:*/
+                    currentFocus--;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                } else if (e.keyCode == 13) {
+                    /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                    e.preventDefault();
+                    if (currentFocus > -1) {
+                        /*and simulate a click on the "active" item:*/
+                        if (x) x[currentFocus].click();
+                    }
+                }
+            });
+            function addActive(x) {
+                /*a function to classify an item as "active":*/
+                if (!x) return false;
+                /*start by removing the "active" class on all items:*/
+                removeActive(x);
+                if (currentFocus >= x.length) currentFocus = 0;
+                if (currentFocus < 0) currentFocus = (x.length - 1);
+                /*add class "autocomplete-active":*/
+                x[currentFocus].classList.add("autocomplete-active");
+            }
+            function removeActive(x) {
+                /*a function to remove the "active" class from all autocomplete items:*/
+                for (var i = 0; i < x.length; i++) {
+                    x[i].classList.remove("autocomplete-active");
+                }
+            }
+            function closeAllLists(elmnt) {
+                /*close all autocomplete lists in the document,
+                            except the one passed as an argument:*/
+                var x = document.getElementsByClassName("autocomplete-items");
+                for (var i = 0; i < x.length; i++) {
+                    if (elmnt != x[i] && elmnt != inp) {
+                        x[i].parentNode.removeChild(x[i]);
+                    }
+                }
+            }
+            /*execute a function when someone clicks in the document:*/
+            document.addEventListener("click", function (e) {
+                closeAllLists(e.target);
+            });
+        }
+
     </script>
 
 </body>
