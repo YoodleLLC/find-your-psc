@@ -146,8 +146,9 @@
 
         map.on('load', () => {
 
-            d3.csv("data/PSC Areas_data.csv")
+            d3.csv("data/new.csv")
                 .then(json => {
+                    console.log('json', json);
                     csvData.push(...json)
 
                     autocomplete(document.getElementById("myInput"), csvData);
@@ -222,26 +223,36 @@
             const c = []
             map.on('click', 'state-fills', (e) => {
                 console.log('', e.features[0]);
-                c.push(e.features[0].properties.COUNTY)
-                console.log('c', c);
+
 
 
 
                 //get geometry and find if a we have a marker from CSV inside  that area
                 const geometry = e.features[0].geometry
                 const data = csvData.find(pin => {
-                    const { Latitude, Longitude } = pin
-                    const point = turf.point([+Longitude, +Latitude]);
-                    return turf.booleanContains(geometry, point);
+                    // const [Latitude, Longitude] = pin['Longitude/Latitude'].split(",")
+                    // if (!Latitude || !Longitude) return false;
+                    // const point = turf.point([+Longitude, +Latitude]);
+                    // return turf.booleanContains(geometry, point);
+                    console.log('pin.county', pin.County);
+                    console.log('pin.e.features[0].properties.County', e.features[0].properties.NAME);
+                    return pin.County === e.features[0].properties.NAME
                 })
+
                 console.log('data', data);
+
                 if (data) {
+                    const [Latitude, Longitude] = data['Longitude/Latitude'].split(",")
+
                     const description = `
-                        <h1>${data.County1}</h1>
-                        <div class="phone">${data["Phone Number1"]}</div>
-                    `
+                                    <h1>${data.County}</h1>
+                                    <div class="phone">${data["Phone Number"]}</div>
+                                    <div class="email">${data["Peer Service Coordinator"]}</div>
+                                    <div class="email">${data["Email"]}</div>
+                                `
+
                     new mapboxgl.Popup()
-                        .setLngLat([+data.Longitude, +data.Latitude])
+                        .setLngLat([+Longitude, +Latitude])
                         .setHTML(description)
                         .addTo(map);
                 }
@@ -302,7 +313,7 @@
                 const arr = data.map((i, key) => {
                     return {
                         index: key,
-                        text: `${i['County1']} ${i['Zip Code1']}`
+                        text: `${i['County']} ${i['Zip Code']}`
                     }
                 })
 
@@ -340,7 +351,7 @@
 
                             if (point) {
 
-                                const { Latitude, Longitude } = point
+                                const [Latitude, Longitude] = point['Longitude/Latitude'].split(",")
                                 const coords = [+Longitude, +Latitude];
                                 const points = turf.point(coords);
 
@@ -351,10 +362,14 @@
                                 })
 
                                 const description = `
-                                    <h1>${point.County1}</h1>
-                                    <div class="phone">${point["Phone Number1"]}</div>
+                                    <h1>${point.County}</h1>
+                                    <div class="phone">${point["Phone Number"]}</div>
+                                    <div class="email">${point["Peer Service Coordinator"]}</div>
+                                    <div class="email">${point["Email"]}</div>
                                 `
-                                new mapboxgl.Popup()
+                                new mapboxgl.Popup({
+                                    closeOnClick: true,
+                                })
                                     .setLngLat(coords)
                                     .setHTML(description)
                                     .addTo(map);
