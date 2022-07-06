@@ -80,13 +80,27 @@
             background-color: DodgerBlue !important;
             color: #ffffff;
         }
+
+        .popup {
+            min-width: 400px;
+        }
+
+        .map-popup-footer-button {
+            border: 1px solid #2271b1;
+            background: #2271b1;
+            color: #FFFFFF;
+            padding: 5px 10px;
+            text-decoration: none;
+            text-shadow: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
 
     <div class="autocomplete" style="width:300px;">
-        <input id="myInput" type="text" name="myCountry" placeholder="Country">
+        <input id="myInput" type="text" name="myCountry" placeholder="Search">
     </div>
     <div id="map"></div>
     <script>
@@ -224,9 +238,6 @@
             map.on('click', 'state-fills', (e) => {
                 console.log('', e.features[0]);
 
-
-
-
                 //get geometry and find if a we have a marker from CSV inside  that area
                 const geometry = e.features[0].geometry
                 const data = csvData.find(pin => {
@@ -244,16 +255,12 @@
                 if (data) {
                     const [Latitude, Longitude] = data['Longitude/Latitude'].split(",")
 
-                    const description = `
-                                    <h1>${data.County}</h1>
-                                    <div class="phone">${data["Phone Number"]}</div>
-                                    <div class="email">${data["Peer Service Coordinator"]}</div>
-                                    <div class="email">${data["Email"]}</div>
-                                `
-
-                    new mapboxgl.Popup()
+                    new mapboxgl.Popup({
+                        closeOnClick: true,
+                        className: "popup"
+                    })
                         .setLngLat([+Longitude, +Latitude])
-                        .setHTML(description)
+                        .setHTML(description(data))
                         .addTo(map);
                 }
             })
@@ -290,6 +297,52 @@
                 map.getCanvas().style.cursor = '';
             });
         });
+
+        function description(data) {
+
+            const county = csvData.filter(i => i["Zip Code"] === data["Zip Code"]).map(i => i.County).join(", ");
+            const description = `
+                <h1>${data['Center Name']}</h1>
+                <table>
+                    <tr>
+                        <td>Coverage&nbsp;Area:</td>
+                        <td>${data['Coverage Area']}</td>
+                    </tr>
+                    <tr>
+                        <td>PSC:</td>
+                        <td>${data['Peer Service Coordinator']}</td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td>
+                            <a href="mailto:${data["Email"]}">${data["Email"]}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Phone Number:</td>
+                        <td>
+                            <a href="${data["Phone Number"]}">${data["Phone Number"]}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Address:</td>
+                        <td>${data["Address"]}</td>
+                    </tr>
+                    <tr>
+                        <td>Zip Code:</td>
+                        <td>${data["Zip Code"]}</td>
+                    </tr>
+                    <tr>
+                        <td>County:</td>
+                        <td>${county}</td>
+                    </tr>
+                </table>
+                <button class="map-popup-footer-button" onclick="window.open('https://goo.gl/maps/FoZPHcEzeJuYnGb18', '_blank');">
+                  Directions
+                </button>
+            `
+            return description
+        }
 
 
         function autocomplete(inp, data) {
@@ -361,17 +414,12 @@
                                     // pitch: 50
                                 })
 
-                                const description = `
-                                    <h1>${point.County}</h1>
-                                    <div class="phone">${point["Phone Number"]}</div>
-                                    <div class="email">${point["Peer Service Coordinator"]}</div>
-                                    <div class="email">${point["Email"]}</div>
-                                `
+
                                 new mapboxgl.Popup({
                                     closeOnClick: true,
                                 })
                                     .setLngLat(coords)
-                                    .setHTML(description)
+                                    .setHTML(description(point))
                                     .addTo(map);
 
                                 // map.setFilter('labels', [
