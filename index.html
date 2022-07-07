@@ -160,7 +160,7 @@
 
         map.on('load', () => {
 
-            d3.csv("data/new.csv")
+            d3.csv("data/VMHD Coverage Sheet - Jul 6 2022 - URLs (1).csv")
                 .then(json => {
                     console.log('json', json);
                     csvData.push(...json)
@@ -299,7 +299,7 @@
         });
 
         function description(data) {
-
+            console.log('data', data);
             const county = csvData.filter(i => i["Zip Code"] === data["Zip Code"]).map(i => i.County).join(", ");
             const description = `
                 <h1>${data['Center Name']}</h1>
@@ -337,7 +337,7 @@
                         <td>${county}</td>
                     </tr>
                 </table>
-                <button class="map-popup-footer-button" onclick="window.open('https://goo.gl/maps/FoZPHcEzeJuYnGb18', '_blank');">
+                <button class="map-popup-footer-button" onclick="window.open('${data['Location URL']}', '_blank');">
                   Directions
                 </button>
             `
