@@ -181,7 +181,6 @@
             fetch('data/texasCounties.json')
                 .then(data => data.json())
                 .then(json => {
-                    console.log('json', json);
                     json.features.forEach((poly, key) => {
                         const color = colors.filter(c => c[1].includes(poly.properties.COUNTY))
                         poly.id = key
@@ -400,8 +399,6 @@
 
                             const point = data[index]
 
-                            console.log('point', point);
-
                             if (point) {
 
                                 const [Latitude, Longitude] = point['Longitude/Latitude'].split(",")
@@ -413,7 +410,6 @@
                                     zoom: 9,
                                     // pitch: 50
                                 })
-
 
                                 new mapboxgl.Popup({
                                     closeOnClick: true,
