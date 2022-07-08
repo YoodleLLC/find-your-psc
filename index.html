@@ -82,7 +82,7 @@
         }
 
         .popup {
-            min-width: 400px;
+            min-width: 350px;
         }
 
         .map-popup-footer-button {
@@ -94,13 +94,18 @@
             text-shadow: none;
             cursor: pointer;
         }
+
+        .county {
+            font-size: 1rem;
+
+        }
     </style>
 </head>
 
 <body>
 
     <div class="autocomplete" style="width:300px;">
-        <input id="myInput" type="text" name="myCountry" placeholder="Search">
+        <input id="myInput" type="text" name="myCountry" placeholder="Search by County">
     </div>
     <div id="map"></div>
     <script>
@@ -164,18 +169,7 @@
                 .then(json => {
                     console.log('json', json);
                     csvData.push(...json)
-
                     autocomplete(document.getElementById("myInput"), csvData);
-
-                    // console.log('json', json);
-                    // json.forEach(point => {
-                    //     const { Latitude, Longitude } = point
-                    //     const marker = new mapboxgl.Marker({
-                    //         draggable: true
-                    //     })
-                    //         .setLngLat([+Longitude, +Latitude])
-                    //         .addTo(map);
-                    // });
                 })
 
             fetch('data/texasCounties.json')
@@ -188,6 +182,27 @@
                     })
                     map.getSource("states").setData(json)
                 })
+
+
+
+            map.addSource('texas', {
+                'type': 'geojson',
+                'data': 'data/texas mask.geojson'
+            });
+
+            // The feature-state dependent fill-opacity expression will render the hover effect
+            // when a feature's hover state is set to true.
+            map.addLayer({
+                'id': 'texas-fills',
+                'type': 'fill',
+                'source': 'texas',
+                'layout': {},
+                'paint': {
+                    'fill-color': '#75cff0',
+                    'fill-opacity': 1
+                }
+            });
+
 
             map.addSource('states', {
                 'type': 'geojson',
@@ -249,8 +264,6 @@
                     return pin.County === e.features[0].properties.NAME
                 })
 
-                console.log('data', data);
-
                 if (data) {
                     const [Latitude, Longitude] = data['Longitude/Latitude'].split(",")
 
@@ -261,7 +274,14 @@
                         .setLngLat([+Longitude, +Latitude])
                         .setHTML(description(data))
                         .addTo(map);
+
+                    map.flyTo({
+                        center: [+Longitude, +Latitude],
+
+                        // pitch: 50
+                    })
                 }
+
             })
 
 
@@ -333,7 +353,7 @@
                     </tr>
                     <tr>
                         <td>County:</td>
-                        <td>${county}</td>
+                        <td class="county">${county}</td>
                     </tr>
                 </table>
                 <button class="map-popup-footer-button" onclick="window.open('${data['Location URL']}', '_blank');">
@@ -413,6 +433,7 @@
 
                                 new mapboxgl.Popup({
                                     closeOnClick: true,
+                                    className: "popup"
                                 })
                                     .setLngLat(coords)
                                     .setHTML(description(point))

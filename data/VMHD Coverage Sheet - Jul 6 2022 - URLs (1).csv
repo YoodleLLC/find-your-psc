@@ -140,19 +140,19 @@ Schleicher,Hill Country Mental Health & Developmental Disabilities Centers,TBA,S
 Sutton,Hill Country Mental Health & Developmental Disabilities Centers,TBA,San Marcos,TBA,TBA,"1921 Corporate Drive, Suite 103 - San Marcos",San Marcos,78666,"29.86396933398943, -97.95821137358028",https://goo.gl/maps/GqkG1Cip8kAQHJUb6
 Uvalde,Hill Country Mental Health & Developmental Disabilities Centers,TBA,San Marcos,TBA,TBA,"1921 Corporate Drive, Suite 103 - San Marcos",San Marcos,78666,"29.86396933398943, -97.95821137358028",https://goo.gl/maps/GqkG1Cip8kAQHJUb6
 Val Verde,Hill Country Mental Health & Developmental Disabilities Centers,TBA,San Marcos,TBA,TBA,"1921 Corporate Drive, Suite 103 - San Marcos",San Marcos,78666,"29.86396933398943, -97.95821137358028",https://goo.gl/maps/GqkG1Cip8kAQHJUb6
-Camp,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,
-Delta,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,
-Ellis,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,
-Franklin,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,
-Hopkins,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,
-Hunt,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,
-Kaufman,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,
-Lamar,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,
-Morris,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,
-Navarro,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,
-Rockwall,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,
-Titus,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,
-Collin,LifePath Systems,Jackey Babb,Collin County,(972)562-0190,jbabb@lifepathsystems.org,P.O. Box 828 - McKinney,McKinney,75070,,https://goo.gl/maps/svTg1QfTmWLgjrzC9
+Camp,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,"33.65658836811385, -95.5360893423145",
+Delta,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,"33.65658836811385, -95.5360893423145",
+Ellis,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,"33.65658836811385, -95.5360893423145",
+Franklin,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,"33.65658836811385, -95.5360893423145",
+Hopkins,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,"33.65658836811385, -95.5360893423145",
+Hunt,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,"33.65658836811385, -95.5360893423145",
+Kaufman,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,"33.65658836811385, -95.5360893423145",
+Lamar,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,"33.65658836811385, -95.5360893423145",
+Morris,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,"33.65658836811385, -95.5360893423145",
+Navarro,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,"33.65658836811385, -95.5360893423145",
+Rockwall,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,"33.65658836811385, -95.5360893423145",
+Titus,Lakes Regional Community Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,"33.65658836811385, -95.5360893423145",
+Collin,LifePath Systems,Jackey Babb,Collin County,(972)562-0190,jbabb@lifepathsystems.org,P.O. Box 828 - McKinney,McKinney,75070,"33.20188222416654, -96.54057299911307",https://goo.gl/maps/svTg1QfTmWLgjrzC9
 Dallas,Metrocare Services,Domingo Rodriguez,Dallas,(805)302-9494,domingo.rodriguez@metrocareservices.org,16160 Midway Road - Dallas,Dallas,75247,"32.96972710679211, -96.8417689311755",https://goo.gl/maps/HxFoCbCCUG44EP4z9
 Brazos,MHMR Authority of Brazos Valley,Patrick Baca,Brazos Valley,(979)417-8215,BrazosValley.MVPN@gmail.com,"2710 Finfeather, Cooper Case Office Park, Suite DII-103 - Bryan",Bryan,77801,"30.64018813964348, -96.37185616006883",https://goo.gl/maps/DVYpVPmrgR3hJc8C9
 Burleson,MHMR Authority of Brazos Valley,Patrick Baca,Brazos Valley,(979)417-8215,BrazosValley.MVPN@gmail.com,"2710 Finfeather, Cooper Case Office Park, Suite DII-103 - Bryan",Bryan,77801,"30.64018813964348, -96.37185616006883",https://goo.gl/maps/DVYpVPmrgR3hJc8C9
@@ -193,12 +193,12 @@ Crosby,StarCare Specialty Health System,Andrew Gilpin,Lubbock,(806)470-9317,agil
 Hockley,StarCare Specialty Health System,Andrew Gilpin,Lubbock,(806)470-9317,agilpin@vetstar.org,3804 I-27 and 38th Street - Lubbock,Lubbock,79403,"33.5621730157515, -101.84520967348897",https://goo.gl/maps/85aM64tjgCXU3moY7
 Lubbock,StarCare Specialty Health System,Andrew Gilpin,Lubbock,(806)470-9317,agilpin@vetstar.org,3804 I-27 and 38th Street - Lubbock,Lubbock,79403,"33.5621730157515, -101.84520967348897",https://goo.gl/maps/85aM64tjgCXU3moY7
 Lynn,StarCare Specialty Health System,Andrew Gilpin,Lubbock,(806)470-9317,agilpin@vetstar.org,3804 I-27 and 38th Street - Lubbock,Lubbock,79403,"33.5621730157515, -101.84520967348897",https://goo.gl/maps/85aM64tjgCXU3moY7
-Austin,Texana Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,
-Colorado,Texana Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,
-Fort Bend,Texana Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,
-Matagorda,Texana Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,
-Waller,Texana Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,
-Wharton,Texana Center,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,
+Austin,Texana Center,N/A,N/A,N/A,N/A,N/A,N/A,77457,"28.681800891390107, -96.03734056953611",
+Colorado,Texana Center,N/A,N/A,N/A,N/A,N/A,N/A,77457,"28.681800891390107, -96.03734056953611",
+Fort Bend,Texana Center,N/A,N/A,N/A,N/A,N/A,N/A,77457,"28.681800891390107, -96.03734056953611",
+Matagorda,Texana Center,N/A,N/A,N/A,N/A,N/A,N/A,77457,"28.681800891390107, -96.03734056953611",
+Waller,Texana Center,N/A,N/A,N/A,N/A,N/A,N/A,77457,"28.681800891390107, -96.03734056953611",
+Wharton,Texana Center,N/A,N/A,N/A,N/A,N/A,N/A,77457,"28.681800891390107, -96.03734056953611",
 Armstrong,Texas Panhandle Centers,Tousha Barnes,Amarillo,(806)341-0581,tousha.barnes@txpan.org,1001 N. South Plk - Amarillo,Amarillo,79101,"35.2035534630252, -101.83765590228104",https://goo.gl/maps/QD8saceLXyA1DEAD7
 Carson,Texas Panhandle Centers,Tousha Barnes,Amarillo,(806)341-0581,tousha.barnes@txpan.org,1001 N. South Plk - Amarillo,Amarillo,79101,"35.2035534630252, -101.83765590228104",https://goo.gl/maps/QD8saceLXyA1DEAD7
 Collingsworth,Texas Panhandle Centers,Tousha Barnes,Amarillo,(806)341-0581,tousha.barnes@txpan.org,1001 N. South Plk - Amarillo,Amarillo,79101,"35.2035534630252, -101.83765590228104",https://goo.gl/maps/QD8saceLXyA1DEAD7
