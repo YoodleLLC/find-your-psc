@@ -34,7 +34,7 @@
         }
 
         input {
-            border: 1px solid transparent;
+            border: 2px solid gray;
             background-color: #f1f1f1;
             padding: 10px;
             font-size: 16px;
@@ -127,6 +127,14 @@
             background:
                 linear-gradient(45deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 43%, #fff 45%, #fff 55%, rgba(0, 0, 0, 0) 57%, rgba(0, 0, 0, 0) 100%),
                 linear-gradient(135deg, #808080 0%, #808080 43%, #fff 45%, #fff 55%, #808080 57%, #808080 100%);
+        }
+
+        .mapboxgl-popup-close-button {
+            font-size: 35px;
+        }
+
+        .mapboxgl-popup-content {
+            border: 2px solid black;
         }
     </style>
 </head>
@@ -358,7 +366,6 @@
             // console.log('data', data);
             const county = csvData.filter(i => i["Zip Code"] === data["Zip Code"]).map(i => i.County).join(", ");
             const description = `
-                <h1>${data['Center Name']}</h1>
                 <table>
                     <tr>
                         <td>Coverage&nbsp;Area:</td>
@@ -378,6 +385,12 @@
                         <td>Phone:</td>
                         <td>
                             <a href="${data["Phone Number"]}">${data["Phone Number"]}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Center Name:</td>
+                        <td>
+                            ${data['Center Name']}
                         </td>
                     </tr>
                     <tr>
