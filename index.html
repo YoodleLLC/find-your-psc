@@ -365,6 +365,12 @@
         function description(data) {
             // console.log('data', data);
             const county = csvData.filter(i => i["Zip Code"] === data["Zip Code"]).map(i => i.County).join(", ");
+
+
+            const phone = data["Phone Number"].includes("Ext:")
+                ? `<a href="tel:${data["Phone Number"].split("Ext")[0]}">${data["Phone Number"].split("Ext")[0].trim()}</a> Ext${data["Phone Number"].split("Ext")[1]}`
+                : `<a href="tel:${data["Phone Number"]}">${data["Phone Number"]}</a>`
+
             const description = `
                 <table>
                     <tr>
@@ -384,7 +390,7 @@
                     <tr>
                         <td>Phone:</td>
                         <td>
-                            <a href="tel:${data["Phone Number"]}">${data["Phone Number"]}</a>
+                            ${phone}
                         </td>
                     </tr>
                     <tr>
